@@ -19,14 +19,6 @@ sub addStrings()
 		if($localizedToBeAdded=~m/^$/)
 		{
 			my $newUnlocalizedFiles = &appendToFiles($unlocalizedFiles,$fileName);
-		#	if($unlocalizedFiles=~m/^$/)
-		#	{
-		#		$newUnlocalizedFiles = $fileName;
-		#	}
-		#	else
-		#	{
-		#		$newUnlocalizedFiles = $unlocalizedFiles.",".$fileName;
-		#	}
 			$stmt = qq|Update $table set unlocalizedFiles="$newUnlocalizedFiles" where id='$rowId';|;
 		}
 		else
@@ -73,6 +65,23 @@ sub checkIfEntryPresent()
 	#print "file returned: $result->{file}\n";
 	return $result;
 		
+}
+
+sub getNonLocalizedStrings()
+{
+	my @strings;
+	my $str;
+	my $stmt = qq|Select string from strings where localized is null|;
+	$sth = $dbh->prepare($stmt);
+	$sth->execute();
+	$sth->bind_columns(\$str);
+	while($sth->fetch())
+	{
+		print $str;
+		push(@strings,$str);
+	}
+	$sth->finish();
+	return \@strings;
 }
 
 sub appendToFiles()
