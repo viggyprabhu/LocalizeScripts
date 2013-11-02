@@ -1,0 +1,7 @@
+--- ##sample configuration
+database: LocalizeStrings 
+username: root
+password: admin
+server  : localhost
+port    : 3306 
+poFilesDir : /home/viggy/Downloads/poFiles/
